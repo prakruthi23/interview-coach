@@ -7,6 +7,8 @@ const TOPICS: Record<string, string[]> = {
   PM: ["product sense", "metrics", "prioritization", "behavioral", "estimation"]
 }
 
+const API_URL = "https://interview-coach-production-b9b7.up.railway.app"
+
 export default function Home() {
   const [role, setRole] = useState('SDE')
   const [difficulty, setDifficulty] = useState('medium')
@@ -20,7 +22,7 @@ export default function Home() {
     setLoading(true)
     setFeedback(null)
     setAnswer('')
-    const res = await fetch('http://localhost:8000/generate-question', {
+    const res = await fetch(`${API_URL}/generate-question`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ role, difficulty, topic })
@@ -32,7 +34,7 @@ export default function Home() {
 
   const evaluateAnswer = async () => {
     setLoading(true)
-    const res = await fetch('http://localhost:8000/evaluate-answer', {
+    const res = await fetch(`${API_URL}/evaluate-answer`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -52,7 +54,6 @@ export default function Home() {
       <h1 className="text-3xl font-bold mb-2">🎯 Interview Coach</h1>
       <p className="text-gray-400 mb-8">Practice technical interviews with AI feedback</p>
 
-      {/* Controls */}
       <div className="grid grid-cols-3 gap-4 mb-6">
         <div>
           <label className="text-sm text-gray-400 mb-1 block">Role</label>
@@ -82,7 +83,6 @@ export default function Home() {
         {loading ? 'Generating...' : 'Generate Question'}
       </button>
 
-      {/* Question */}
       {question && (
         <div className="bg-gray-800 rounded-lg p-6 mb-6">
           <div className="flex gap-2 mb-3">
@@ -102,7 +102,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* Feedback */}
       {feedback && (
         <div className="bg-gray-800 rounded-lg p-6">
           <div className="flex items-center gap-3 mb-4">
